@@ -12,10 +12,10 @@ dependencies:
     - curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
     - chmod 700 get_helm.sh
     - ./get_helm.sh
-
+    - helm init -c
+  cache_directories:
+    - ~/.helm
 test:
-  pre:
-    - helm init
   override:
     - git fetch
     - git config --global user.email "bot@bcaldwell.ca" && git config --global user.name "Benjamin Bot"
