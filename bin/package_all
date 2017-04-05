@@ -1,16 +1,21 @@
 #!/usr/bin/env ruby
 
 require 'fileutils'
+require 'yaml'
 
 DOMAIN="https://charts.bcaldwell.ca"
 CHART_LOCATION="charts-repo"
 IGNORED_DIRS=%W(#{CHART_LOCATION} bin)
 
 def package_chart(name)
-  return puts "#{name} doesnt exist or isnt a directory"  unless File.directory? name
+  return puts " (doesnt exist or isnt a directory)"  unless File.directory? name
+  chart = YAML.load_file(File.join(name, "Chart.yaml"))
+  return print " (Charts.yaml couldn't be parsed)" if chart.nil?
+  current_version = chart["version"] 
+  return print " (already packaged)" if File.exists? File.join(CHART_LOCATION, "#{name}-#{current_version}.tgz")
   `helm package #{name}`
   packages = Dir.glob("#{name}-*.tgz")
-  return "couldnt find packaged version of #{name}" if packages.empty?
+  return print " (couldnt find packaged version of #{name})" if packages.empty?
   FileUtils.mv(packages.first, "#{CHART_LOCATION}/")
 end
 
