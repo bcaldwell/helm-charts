@@ -1,0 +1,23 @@
+machine:
+  ruby:
+    version: "2.4"
+
+general:
+  branches:
+    only:
+      - master
+
+test:
+  override:
+    - git fetch
+    - git config --global user.email "bot@bcaldwell.ca" && git config --global user.name "Benjamin Bot"
+
+    # Publish the Github Pages Site
+		- ls | grep "README.md|charts-repo" | xargs rm
+    - mv charts-repo/* .
+    - rm -rf charts-repo
+    - git status || true
+    - git add --all . || true
+    - git commit -m "Update helm repo '$(git log -1 --pretty=%B)' [ci skip]" || true
+		- git push origin HEAD:gh-pages -f || true
+
