@@ -43,3 +43,4 @@ build-iPhoneSimulator/
 .rvmrc
 
 /chart-repo/**/*
+*.tgz
