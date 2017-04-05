@@ -44,6 +44,6 @@ build-iPhoneSimulator/
 .byebug_history
 
 *.tgz
-!chart-repo/*
+!chart-repo/
 
 get_helm.sh
