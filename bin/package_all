@@ -2,6 +2,7 @@
 
 require 'fileutils'
 require 'yaml'
+require "net/http"
 
 DOMAIN="https://charts.bcaldwell.ca"
 CHART_LOCATION="charts-repo"
@@ -11,12 +12,21 @@ def package_chart(name)
   return puts " (doesnt exist or isnt a directory)"  unless File.directory? name
   chart = YAML.load_file(File.join(name, "Chart.yaml"))
   return print " (Charts.yaml couldn't be parsed)" if chart.nil?
-  current_version = chart["version"] 
-  return print " (already packaged)" if File.exists? File.join(CHART_LOCATION, "#{name}-#{current_version}.tgz")
+  current_version = chart["version"]
+  return print " (already packaged)" if remote_chart_version_exists? name, current_version
   `helm package #{name}`
   packages = Dir.glob("#{name}-*.tgz")
   return print " (couldnt find packaged version of #{name})" if packages.empty?
   FileUtils.mv(packages.first, "#{CHART_LOCATION}/")
+end
+
+def remote_chart_version_exists?(name, version)
+  url = File.join(DOMAIN, "#{name}-#{version}.tgz")
+  url = URI.parse(url)
+  req = Net::HTTP.new(url.host, url.port)
+  req.use_ssl = true if url.scheme == "https"
+  res = req.request_head(url.path)
+  res.code == "200"
 end
 
 def puts_success
