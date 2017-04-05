@@ -22,6 +22,10 @@ test:
 
     # package all them charts
     - bin/package_all
+    - git status
+    - git add --all .
+    - git commit -m "Package charts '$(git log -1 --pretty=%B)' [ci skip]" || true
+    - git push origin master || true
 
     # Publish the Github Pages Site/helm repo
     - ls -A | grep -v "README.md$\|charts-repo$\|.git$\|CNAME" | xargs rm -rf
