@@ -13,7 +13,7 @@ def package_chart(name)
   chart = YAML.load_file(File.join(name, "Chart.yaml"))
   return print " (Charts.yaml couldn't be parsed)" if chart.nil?
   current_version = chart["version"]
-  return print " (already packaged)" if remote_chart_version_exists? name, current_version
+  return print " (already packaged)" if File.exists? File.join(CHART_LOCATION, "#{name}-#{current_version}.tgz")
   `helm package #{name}`
   packages = Dir.glob("#{name}-*.tgz")
   return print " (couldnt find packaged version of #{name})" if packages.empty?
