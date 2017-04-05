@@ -20,4 +20,12 @@ test:
     - git add --all . || true
     - git commit -m "Update helm repo '$(git log -1 --pretty=%B)' [ci skip]" || true
     - git push origin HEAD:gh-pages -f || true
+    
+    # purge cloudflare cache
+    - |
+      curl -X DELETE "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/purge_cache" 
+        -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" 
+        -H "X-Auth-Key: ${CLOUDFLARE_API_KEY}" 
+        -H "Content-Type: application/json" 
+        --data '{"purge_everything":true}'
 
