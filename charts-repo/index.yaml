@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   diatex:
   - apiVersion: v1
-    created: 2017-04-05T04:08:12.873324552Z
+    created: 2017-04-05T04:10:10.741533654Z
     description: A Helm chart for Kubernetes
     digest: d8e34a8a6e167b3f1dac4055d7a4a1a43f0b02cc848ba9c24bf5d55297aa86b9
     name: diatex
@@ -10,11 +10,11 @@ entries:
     - https://charts.bcaldwell.ca/diatex-0.1.2.tgz
     version: 0.1.2
   - apiVersion: v1
-    created: 2017-04-05T04:08:12.873073127Z
+    created: 2017-04-05T04:10:10.741286156Z
     description: A Helm chart for Kubernetes
     digest: db7747d7570dfe980480c0ef72195a41d88d2b0894d91265c710455c9ee851b8
     name: diatex
     urls:
     - https://charts.bcaldwell.ca/diatex-0.1.1.tgz
     version: 0.1.1
-generated: 2017-04-05T04:08:12.872612395Z
+generated: 2017-04-05T04:10:10.740832016Z
