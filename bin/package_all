@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+
+DOMAIN="https://charts.bcaldwell.ca"
+CHART_LOCATION="charts-repo"
+IGNORED_DIRS=%W(#{CHART_LOCATION} bin)
+
+def package_chart(name)
+  return puts "#{name} doesnt exist or isnt a directory"  unless File.directory? name
+  `helm package #{name}`
+  packages = Dir.glob("#{name}-*.tgz")
+  return "couldnt find packaged version of #{name}" if packages.empty?
+  FileUtils.mv(packages.first, "#{CHART_LOCATION}/")
+end
+
+def puts_success
+ puts " \x1b[32m✓\x1b[0m"
+end
+Dir.mkdir CHART_LOCATION unless File.directory? CHART_LOCATION
+
+dirs = Dir["*"].reject { |e| !File.directory?(e) }
+
+dirs.each do |dir|
+  next if IGNORED_DIRS.include? dir
+  print dir
+  package_chart dir
+  puts_success
+end
+
+puts ""
+
+print "creating index.yaml"
+`helm repo index #{CHART_LOCATION} --url #{DOMAIN}`
+puts_success
