@@ -19,5 +19,5 @@ test:
     - git status || true
     - git add --all . || true
     - git commit -m "Update helm repo '$(git log -1 --pretty=%B)' [ci skip]" || true
-		- git push origin HEAD:gh-pages -f || true
+    - git push origin HEAD:gh-pages -f || true
 
