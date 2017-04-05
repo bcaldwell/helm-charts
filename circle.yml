@@ -13,7 +13,7 @@ test:
     - git config --global user.email "bot@bcaldwell.ca" && git config --global user.name "Benjamin Bot"
 
     # Publish the Github Pages Site/helm repo
-    - ls -a | grep -v "README.md\|charts-repo\|.git\" | xargs rm -rf
+    - ls -a | grep -v "README.md\|charts-repo\|.git$\|.$\|..$" | xargs rm -rf
     - mv charts-repo/* .
     - rm -rf charts-repo
     - git status || true
