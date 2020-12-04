@@ -1,0 +1,3 @@
+<h1> Benjamin's Helm Repository </h1>
+
+To get started run `helm repo add benjamin https://charts.bcaldwell.ca`
