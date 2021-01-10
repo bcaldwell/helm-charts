@@ -3,19 +3,24 @@ version: 2.1
 jobs:
   publish_charts:
     docker:
-      image: cimg/base:2020.01
+    - image: cimg/base:2020.01
     # Run the welcome/run job in its own container
     steps:
       - checkout
       - run:
           name: install dependencies
-          command: sh scripts/install_deps.sh
+          command: |
+            sh scripts/install_deps.sh
+            git config --global user.email "bot@bcaldwell.ca"
+            git config --global user.name "benjamin-bot"
       - run:
           name: publish helm charts
           command: bash scripts/publish_charts.sh
       - run:
           name: update k8s_config repo
-          command: bash scripts/update_k8s_config.sh
+          command: |
+            export K8S_CONFIG_REPO="https://$GITHUB_TOKEN@github.com/bcaldwell/k8s-config.git"
+            bash scripts/update_k8s_config.sh
     environment:
       REPO: helm-charts
       OWNER: bcaldwell

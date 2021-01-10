@@ -72,11 +72,16 @@ push_changes() {
         msg+=", "
       fi
     done
+
+    echo "committing change with message: $msg"
+    git add .
+    git commit -m "$msg"
+    git push
+  else
+    echo "nothing to commit"
   fi
 
-  git add .
-  git commit -m "$msg"
-  git push
+
 }
 
 main
