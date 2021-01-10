@@ -1,0 +1,27 @@
+version: 2.1
+
+jobs:
+  publish_charts:
+    docker:
+      - image: cimg/base:2020.01
+    # Run the welcome/run job in its own container
+    steps:
+      - checkout
+
+      - name: install dependencies
+        run: sh scripts/install_deps.sh
+      - name: publish helm charts
+        run: bash scripts/publish_charts.sh
+      - name: update k8s_config repo
+        run: bash scripts/update_k8s_config.sh
+    environment:
+      REPO: helm-charts
+      OWNER: bcaldwell
+      CHART_REPO_URL: https://charts.bcaldwell.ca
+
+
+workflows:
+  version: 2
+  publish_charts:
+    jobs:
+      - publish_charts
