@@ -31,4 +31,8 @@ workflows:
   version: 2
   publish_charts:
     jobs:
-      - publish_charts
+      - publish_charts:
+          filters:
+            branches:
+               only:
+               - main

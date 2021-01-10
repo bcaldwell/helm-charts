@@ -7,6 +7,8 @@ set -o pipefail
 declare -A metadataMapping=(
   ["postgres-s3-backup"]="selfops/postgres-s3-backup"
   ["jupyter"]="jupyter/jupyter"
+  ["selfops"]="selfops/selfops"
+  ["ynab-importers"]="selfops/ynab-importers"
 )
 
 main() {
