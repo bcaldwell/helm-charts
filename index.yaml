@@ -21,6 +21,16 @@ entries:
     urls:
     - https://github.com/bcaldwell/helm-charts/releases/download/jupyter-0.1.1/jupyter-0.1.1.tgz
     version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-01-10T13:10:10.940072644Z"
+    description: another jupyter helm chart
+    digest: 972b37209324f7ac7a4c4616637b3e365b771eb127f8491e60c5baac555d23bb
+    name: jupyter
+    type: application
+    urls:
+    - https://github.com/bcaldwell/helm-charts/releases/download/jupyter-0.0.1/jupyter-0.0.1.tgz
+    version: 0.0.1
   postgres-s3-backup:
   - apiVersion: v2
     appVersion: 0.0.1
