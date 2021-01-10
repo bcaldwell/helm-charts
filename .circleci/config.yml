@@ -7,13 +7,15 @@ jobs:
     # Run the welcome/run job in its own container
     steps:
       - checkout
-
-      - name: install dependencies
-        run: sh scripts/install_deps.sh
-      - name: publish helm charts
-        run: bash scripts/publish_charts.sh
-      - name: update k8s_config repo
-        run: bash scripts/update_k8s_config.sh
+      - run:
+          name: install dependencies
+          command: sh scripts/install_deps.sh
+      - run:
+          name: publish helm charts
+          command: bash scripts/publish_charts.sh
+      - run:
+          name: update k8s_config repo
+          command: bash scripts/update_k8s_config.sh
     environment:
       REPO: helm-charts
       OWNER: bcaldwell
