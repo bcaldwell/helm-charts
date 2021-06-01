@@ -1,5 +1,16 @@
 apiVersion: v1
 entries:
+  instapaper-archiver:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2021-06-01T15:43:35.314608058Z"
+    description: instapaper-archiver
+    digest: 3d710cf2aae8a849e725de9bdb2636b1fe4ad40f399dc43e5b3d0a14db7edd01
+    name: instapaper-archiver
+    type: application
+    urls:
+    - https://github.com/bcaldwell/helm-charts/releases/download/instapaper-archiver-0.1.0/instapaper-archiver-0.1.0.tgz
+    version: 0.1.0
   jupyter:
   - apiVersion: v2
     appVersion: 1.16.0
