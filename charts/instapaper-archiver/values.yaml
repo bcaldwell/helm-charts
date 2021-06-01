@@ -1,0 +1,39 @@
+image:
+  repository: benjamincaldwell/instapaper-archiver
+  tag: latest
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+schedule: "0 4 * * *"
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsGroup: 100
+  runAsUser: 1000
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  # runAsUser: 1000
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+ttlSecondsAfterFinished: 86400 # 1 day
+
+env: {}
+envFromSecret: ""
+restartPolicy: OnFailure
