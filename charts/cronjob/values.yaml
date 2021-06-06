@@ -1,5 +1,5 @@
 image:
-  repository: benjamincaldwell/postgres-s3-backup
+  repository: invalid-image
   tag: latest
   pullPolicy: IfNotPresent
   pullSecrets: []
@@ -7,18 +7,20 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-schedule: "0 5 * * *"
+schedule: "0 4 * * *"
+
+command: ["sleep", "1"]
 
 podSecurityContext:
   runAsNonRoot: true
   runAsGroup: 100
   runAsUser: 1000
 
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
   # runAsUser: 1000
 
 resources: {}
@@ -37,3 +39,7 @@ ttlSecondsAfterFinished: 86400 # 1 day
 env: {}
 envFromSecret: ""
 restartPolicy: OnFailure
+
+configmapMounts:
+  # - name: test
+  #   path: /config

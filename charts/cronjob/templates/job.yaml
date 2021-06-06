@@ -15,8 +15,7 @@ spec:
             imagePullPolicy: {{ .Values.image.pullPolicy }}
             securityContext:
               {{- .Values.securityContext | toYaml | nindent 14 }}
-            command:
-            - ./instapaper-archiver
+            command: {{ .Values.Command }}
             {{- if gt (len .Values.envFromSecret) 0 }}
             env:
             {{- range $key, $value := .Values.env }}
@@ -28,6 +27,19 @@ spec:
             envFrom:
             - secretRef:
                 name: {{ .Values.envFromSecret }}
+            {{- end }}
+            volumeMounts:
+            {{- range $value := .Values.configmapMounts }}
+            - name: {{ $value.name }}
+              mountPath: {{ $value.path }}
+              readOnly: true
+            {{- end }}
+
+          volumes:
+          {{- range $value := .Values.configmapMounts }}
+          - name: {{ $value.name }}
+            configMap:
+              name: {{ $value.name }}
             {{- end }}
           restartPolicy: {{ .Values.restartPolicy }}
           nodeSelector:

@@ -1,6 +1,0 @@
-apiVersion: v2
-name: postgres-s3-backup
-description: postgres-s3-backup
-type: application
-version: 0.1.0
-appVersion: 0.0.1
