@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ .Chart.Name }}
+  name: {{ .Values.nameOverride | default .Chart.Name }}
 spec:
   schedule: {{ .Values.schedule | quote }}
   jobTemplate:
