@@ -1,0 +1,120 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: {{ include "notion-hooks.fullname" . }}
+  labels:
+    {{- include "notion-hooks.labels" . | nindent 4 }}
+  namespace: {{ .Release.namespace }}
+spec:
+  service:
+    ports:
+    - port: {{ .Values.global.webhook.servicePort }}
+      targetPort: {{ .Values.global.webhook.servicePort }}
+  webhook:
+    recipe:
+      authSecret: {{ .Values.routes.recipe.webhook.authSecret | default .Values.global.webhook.authSecret | toYaml | nindent 8 }}
+      endpoint: {{ .Values.routes.recipe.webhook.endpoint }}
+      method: POST
+      port: {{ .Values.global.servicePort }}
+      url: ""
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: {{ include "notion-hooks.fullname" . }}
+  labels:
+    {{- include "notion-hooks.labels" . | nindent 4 }}
+  namespace: {{ .Release.namespace }}
+spec:
+  dependencies:
+  - eventName: recipe
+    eventSourceName: {{ include "notion-hooks.fullname" . }}
+    name: notion-hooks-events
+  template:
+    serviceAccountName: {{ .Values.routes.recipe.sensor.serviceAccountName | default .Values.global.sensor.serviceAccountName }}
+  triggers:
+  - template:
+      k8s:
+        group: argoproj.io
+        operation: create
+        parameters:
+        - dest: spec.arguments.parameters.0.value
+          src:
+            dataKey: body
+            dependencyName: notion-hooks-events
+        resource: workflows
+        source:
+          resource:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
+            metadata:
+              generateName: notion-hooks-recipe-
+              namespace: {{ .Values.routes.recipe.workflow.namespace | default .Values.global.workflow.namespace }}
+            spec:
+              arguments:
+                parameters:
+                - name: body
+                  value: temp
+              entrypoint: kindle
+              serviceAccountName: {{ .Values.routes.recipe.workflow.serviceAccountName | default .Values.global.workflow.serviceAccountName }}
+              templates:
+              - container:
+                  args:
+                  - recipe-db-import
+                  - --url
+                  - "{{`{{inputs.parameters.body}}`}}"
+                  command:
+                  - notion-hooks
+                  env:
+                  - name: NOTION_API_KEY
+                    valueFrom:
+                      secretKeyRef:
+                        key: notion_api_key
+                        name: notion-secret
+                  image: {{ printf "%s:%s" (.Values.routes.recipe.workflow.image.repository | default .Values.global.workflow.image.repository) (.Values.routes.recipe.workflow.image.tag | default .Values.global.workflow.image.tag)}}
+                inputs:
+                  parameters:
+                  - name: body
+                name: kindle
+              ttlStrategy:
+                secondsAfterCompletion: 3600
+                secondsAfterFailure: 3600
+                secondsAfterSuccess: 3600
+              volumes:
+              - name: notion-secret
+                secret:
+                  secretName: {{ .Values.routes.recipe.workflow.notionSecretName | default .Values.global.workflow.notionSecretName }}
+        version: v1alpha1
+      name: notion-hooks-recipe
+
+---
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    {{- .Values.ingress.annotations | toYaml | nindent 4 }}
+  labels:
+    {{- include "notion-hooks.labels" . | nindent 4 }}
+  name: {{ .Values.ingress.name | default (include "notion-hooks.fullname" .) }}
+  namespace: {{ .Release.namespace }}
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: {{ include "notion-hooks.fullname" . }}-eventsource-svc
+            port:
+              number: {{ .Values.global.webhook.servicePort }}
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - {{ .Values.ingress.host }}
+    secretName: {{ .Values.ingress.tls.secretName }}
+{{- end }}

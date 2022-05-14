@@ -1,0 +1,42 @@
+# applies to all routes/workflows
+global:
+  # overwrite namepsace the workflow runs in
+  webhook:
+    servicePort: 12000
+    # argo events authSecret used by the webhook
+    authSecret: {}
+  
+  sensor:
+    # needs to be allowed to create workflows
+    serviceAccountName: ""
+
+  workflow:
+    image:
+      repository: benjamincaldwell/notion-hooks
+      tag: latest
+      # pullPolicy: IfNotPresent
+      # imagePullSecrets: []
+    namespace: ""
+    serviceAccountName: ""
+    notionSecretName: "notion-secret"
+
+routes:
+  recipe: 
+    # overwrite namepsace the workflow runs in
+    workflow: 
+      image: {}
+      #   repository: benjamincaldwell/notion-hooks
+      #   tag: latest
+      # namespace: ""
+    sensor: {}
+    webhook:
+      # argo events authSecret used by the webhook
+      authSecret: null
+      endpoint: "/recipe"
+
+ingress:
+  enabled: false
+  annotations: {}
+  host: ""
+  tls:
+    secretName: ""
