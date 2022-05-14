@@ -3,6 +3,16 @@ entries:
   cronjob:
   - apiVersion: v2
     appVersion: 0.0.1
+    created: "2022-05-14T20:20:56.943010173Z"
+    description: cronjob
+    digest: 29857e14060c439431fc1c2a92f0d56295b67770c6fe0eff39d9cfe2128020bc
+    name: cronjob
+    type: application
+    urls:
+    - https://github.com/bcaldwell/helm-charts/releases/download/cronjob-0.1.1/cronjob-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 0.0.1
     created: "2021-06-06T16:27:13.390162819Z"
     description: cronjob
     digest: 3784015687bed4d1207ab0dada799eef2904457cae27968dfd2ac20e35eee6a9
@@ -33,6 +43,17 @@ entries:
     urls:
     - https://github.com/bcaldwell/helm-charts/releases/download/jupyter-0.0.1/jupyter-0.0.1.tgz
     version: 0.0.1
+  notion-hooks:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2022-05-14T20:20:57.012443061Z"
+    description: A Helm chart for Kubernetes
+    digest: cd21562597bd50157d5cf3a9ad29ffa216c22ef8f699b0d59e646096c77e7770
+    name: notion-hooks
+    type: application
+    urls:
+    - https://github.com/bcaldwell/helm-charts/releases/download/notion-hooks-0.1.0/notion-hooks-0.1.0.tgz
+    version: 0.1.0
   postgres-s3-backup:
   - apiVersion: v2
     appVersion: 0.0.1
