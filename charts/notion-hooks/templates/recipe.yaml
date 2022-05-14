@@ -16,7 +16,7 @@ spec:
       authSecret: {{ .Values.routes.recipe.webhook.authSecret | default .Values.global.webhook.authSecret | toYaml | nindent 8 }}
       endpoint: {{ .Values.routes.recipe.webhook.endpoint }}
       method: POST
-      port: {{ .Values.global.servicePort }}
+      port: {{ .Values.global.webhook.servicePort | quote }}
       url: ""
 
 ---
