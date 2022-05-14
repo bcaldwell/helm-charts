@@ -61,12 +61,11 @@ spec:
               serviceAccountName: {{ .Values.routes.recipe.workflow.serviceAccountName | default .Values.global.workflow.serviceAccountName }}
               templates:
               - container:
-                  args:
+                  command:
+                  - notion-hooks
                   - recipe-db-import
                   - --url
                   - "{{`{{inputs.parameters.body}}`}}"
-                  command:
-                  - notion-hooks
                   env:
                   - name: NOTION_API_KEY
                     valueFrom:
