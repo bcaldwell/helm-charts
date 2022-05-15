@@ -21,7 +21,8 @@ global:
     notionSecretName: "notion-secret"
 
 routes:
-  recipe: 
+  recipeImport: 
+    enabled: true
     # overwrite namepsace the workflow runs in
     workflow: 
       image: {}
@@ -32,7 +33,21 @@ routes:
     webhook:
       # argo events authSecret used by the webhook
       authSecret: null
-      endpoint: "/recipe"
+      # endpoint: "/recipe-import"
+
+  kindleHighlightsSync: 
+    enabled: true
+    # overwrite namepsace the workflow runs in
+    workflow: 
+      image: {}
+      #   repository: benjamincaldwell/notion-hooks
+      #   tag: latest
+      # namespace: ""
+    sensor: {}
+    webhook:
+      # argo events authSecret used by the webhook
+      authSecret: null
+      # endpoint: "/recipe-import"
 
 ingress:
   enabled: false

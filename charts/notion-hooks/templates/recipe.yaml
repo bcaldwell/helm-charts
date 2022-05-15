@@ -12,12 +12,22 @@ spec:
     - port: {{ .Values.global.webhook.servicePort }}
       targetPort: {{ .Values.global.webhook.servicePort }}
   webhook:
-    recipe:
-      authSecret: {{ .Values.routes.recipe.webhook.authSecret | default .Values.global.webhook.authSecret | toYaml | nindent 8 }}
-      endpoint: {{ .Values.routes.recipe.webhook.endpoint }}
+{{- if .Values.routes.recipeImport.enabled }}
+    recipe-import:
+      authSecret: {{ .Values.routes.recipeImport.webhook.authSecret | default .Values.global.webhook.authSecret | toYaml | nindent 8 }}
+      endpoint: {{ .Values.routes.recipeImport.webhook.endpoint | default "/recipe-import" }}
+      method: POST
+      port: {{ .Values.global.servicePort }}
+      url: ""
+{{ end -}}
+{{- if .Values.routes.kindleHighlightsSync.enabled }}
+    kindle-highlights-sync:
+      authSecret: {{ .Values.routes.kindleHighlightsSync.webhook.authSecret | default .Values.global.webhook.authSecret | toYaml | nindent 8 }}
+      endpoint: {{ .Values.routes.kindleHighlightsSync.webhook.endpoint | default "/kindle-highlights-sync" }}
       method: POST
       port: {{ .Values.global.webhook.servicePort | quote }}
       url: ""
+{{ end -}}
 
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -29,12 +39,20 @@ metadata:
   namespace: {{ .Release.namespace }}
 spec:
   dependencies:
-  - eventName: recipe
+{{- if .Values.routes.recipeImport.enabled }}
+  - eventName: recipe-import
     eventSourceName: {{ include "notion-hooks.fullname" . }}
-    name: notion-hooks-events
+    name: notion-hooks-events-recipe-import
+{{ end -}}
+{{- if .Values.routes.kindleHighlightsSync.enabled }}
+  - eventName: kindle-highlights-sync
+    eventSourceName: {{ include "notion-hooks.fullname" . }}
+    name: notion-hooks-events-kindle-highlights-sync
+{{- end }}
   template:
-    serviceAccountName: {{ .Values.routes.recipe.sensor.serviceAccountName | default .Values.global.sensor.serviceAccountName }}
+    serviceAccountName: {{ .Values.routes.recipeImport.sensor.serviceAccountName | default .Values.global.sensor.serviceAccountName }}
   triggers:
+{{- if .Values.routes.recipeImport.enabled }}
   - template:
       k8s:
         group: argoproj.io
@@ -43,40 +61,45 @@ spec:
         - dest: spec.arguments.parameters.0.value
           src:
             dataKey: body.url
-            dependencyName: notion-hooks-events
+            dependencyName: notion-hooks-events-recipe-import
         resource: workflows
         source:
           resource:
             apiVersion: argoproj.io/v1alpha1
             kind: Workflow
             metadata:
-              generateName: notion-hooks-recipe-
-              namespace: {{ .Values.routes.recipe.workflow.namespace | default .Values.global.workflow.namespace }}
+              generateName: notion-hooks-recipe-import-
+              namespace: {{ .Values.routes.recipeImport.workflow.namespace | default .Values.global.workflow.namespace }}
             spec:
               arguments:
                 parameters:
                 - name: body
                   value: temp
               entrypoint: kindle
-              serviceAccountName: {{ .Values.routes.recipe.workflow.serviceAccountName | default .Values.global.workflow.serviceAccountName }}
+              serviceAccountName: {{ .Values.routes.recipeImport.workflow.serviceAccountName | default .Values.global.workflow.serviceAccountName }}
               templates:
               - container:
                   command:
                   - notion-hooks
-                  - recipe-db-import
+                  - recipe-import
                   - --url
-                  - "{{`{{inputs.parameters.body}}`}}"
+                  - "{{`{{inputs.parameters.url}}`}}"
                   env:
                   - name: NOTION_API_KEY
                     valueFrom:
                       secretKeyRef:
                         key: notion_api_key
                         name: notion-secret
-                  image: {{ printf "%s:%s" (.Values.routes.recipe.workflow.image.repository | default .Values.global.workflow.image.repository) (.Values.routes.recipe.workflow.image.tag | default .Values.global.workflow.image.tag)}}
+                  - name: NOTION_DB_ID
+                    valueFrom:
+                      secretKeyRef:
+                        key: recipe_import_db_id
+                        name: notion-secret
+                  image: {{ printf "%s:%s" (.Values.routes.recipeImport.workflow.image.repository | default .Values.global.workflow.image.repository) (.Values.routes.recipeImport.workflow.image.tag | default .Values.global.workflow.image.tag)}}
                 inputs:
                   parameters:
-                  - name: body
-                name: kindle
+                  - name: url
+                name: notion-hooks-recipe-import
               ttlStrategy:
                 secondsAfterCompletion: 3600
                 secondsAfterFailure: 3600
@@ -84,10 +107,69 @@ spec:
               volumes:
               - name: notion-secret
                 secret:
-                  secretName: {{ .Values.routes.recipe.workflow.notionSecretName | default .Values.global.workflow.notionSecretName }}
+                  secretName: {{ .Values.routes.recipeImport.workflow.notionSecretName | default .Values.global.workflow.notionSecretName }}
         version: v1alpha1
-      name: notion-hooks-recipe
-
+      name: notion-hooks-recipe-import
+{{ end -}}
+{{- if .Values.routes.kindleHighlightsSync.enabled }}
+  - template:
+      k8s:
+        group: argoproj.io
+        operation: create
+        parameters:
+        - dest: spec.arguments.parameters.0.value
+          src:
+            dataKey: body.html
+            dependencyName: notion-hooks-events-kindle-highlights-sync
+        resource: workflows
+        source:
+          resource:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
+            metadata:
+              generateName: notion-hooks-kindle-highlights-sync-
+              namespace: {{ .Values.routes.kindleHighlightsSync.workflow.namespace | default .Values.global.workflow.namespace }}
+            spec:
+              arguments:
+                parameters:
+                - name: body
+                  value: temp
+              entrypoint: kindle
+              serviceAccountName: {{ .Values.routes.kindleHighlightsSync.workflow.serviceAccountName | default .Values.global.workflow.serviceAccountName }}
+              templates:
+              - container:
+                  command:
+                  - notion-hooks
+                  - kindle-highlights-sync
+                  - --html
+                  - "{{`{{inputs.parameters.html}}`}}"
+                  env:
+                  - name: NOTION_API_KEY
+                    valueFrom:
+                      secretKeyRef:
+                        key: notion_api_key
+                        name: notion-secret
+                  - name: NOTION_DB_ID
+                    valueFrom:
+                      secretKeyRef:
+                        key: kindle_highlights_sync_db_id
+                        name: notion-secret
+                  image: {{ printf "%s:%s" (.Values.routes.kindleHighlightsSync.workflow.image.repository | default .Values.global.workflow.image.repository) (.Values.routes.kindleHighlightsSync.workflow.image.tag | default .Values.global.workflow.image.tag)}}
+                inputs:
+                  parameters:
+                  - name: html
+                name: notion-hooks-kindle-highlights-sync
+              ttlStrategy:
+                secondsAfterCompletion: 3600
+                secondsAfterFailure: 3600
+                secondsAfterSuccess: 3600
+              volumes:
+              - name: notion-secret
+                secret:
+                  secretName: {{ .Values.routes.kindleHighlightsSync.workflow.notionSecretName | default .Values.global.workflow.notionSecretName }}
+        version: v1alpha1
+      name: notion-hooks-kindle-highlights-sync
+{{ end -}}
 ---
 {{- if .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
