@@ -17,7 +17,7 @@ spec:
       authSecret: {{ .Values.routes.recipeImport.webhook.authSecret | default .Values.global.webhook.authSecret | toYaml | nindent 8 }}
       endpoint: {{ .Values.routes.recipeImport.webhook.endpoint }}
       method: POST
-      port: {{ .Values.global.servicePort }}
+      port: {{ .Values.global.webhook.servicePort | quote }}
       url: ""
 {{ end -}}
 {{- if .Values.routes.kindleHighlightsSync.enabled }}
