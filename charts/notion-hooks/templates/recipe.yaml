@@ -15,7 +15,7 @@ spec:
 {{- if .Values.routes.recipeImport.enabled }}
     recipe-import:
       authSecret: {{ .Values.routes.recipeImport.webhook.authSecret | default .Values.global.webhook.authSecret | toYaml | nindent 8 }}
-      endpoint: {{ .Values.routes.recipeImport.webhook.endpoint | default "/recipe-import" }}
+      endpoint: {{ .Values.routes.recipeImport.webhook.endpoint }}
       method: POST
       port: {{ .Values.global.servicePort }}
       url: ""
@@ -23,7 +23,7 @@ spec:
 {{- if .Values.routes.kindleHighlightsSync.enabled }}
     kindle-highlights-sync:
       authSecret: {{ .Values.routes.kindleHighlightsSync.webhook.authSecret | default .Values.global.webhook.authSecret | toYaml | nindent 8 }}
-      endpoint: {{ .Values.routes.kindleHighlightsSync.webhook.endpoint | default "/kindle-highlights-sync" }}
+      endpoint: {{ .Values.routes.kindleHighlightsSync.webhook.endpoint }}
       method: POST
       port: {{ .Values.global.webhook.servicePort | quote }}
       url: ""

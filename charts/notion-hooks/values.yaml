@@ -33,7 +33,7 @@ routes:
     webhook:
       # argo events authSecret used by the webhook
       authSecret: null
-      # endpoint: "/recipe-import"
+      endpoint: "/recipe-import"
 
   kindleHighlightsSync: 
     enabled: true
@@ -47,7 +47,7 @@ routes:
     webhook:
       # argo events authSecret used by the webhook
       authSecret: null
-      # endpoint: "/recipe-import"
+      endpoint: "/kindle-highlights-sync"
 
 ingress:
   enabled: false
