@@ -77,7 +77,7 @@ spec:
                 parameters:
                 - name: body
                   value: temp
-              entrypoint: kindle
+              entrypoint: notion-hooks-recipe-import
               serviceAccountName: {{ .Values.routes.recipeImport.workflow.serviceAccountName | default .Values.global.workflow.serviceAccountName }}
               templates:
               - container:
@@ -137,7 +137,7 @@ spec:
                 parameters:
                 - name: body
                   value: temp
-              entrypoint: kindle
+              entrypoint: notion-hooks-kindle-highlights-sync
               serviceAccountName: {{ .Values.routes.kindleHighlightsSync.workflow.serviceAccountName | default .Values.global.workflow.serviceAccountName }}
               templates:
               - container:
