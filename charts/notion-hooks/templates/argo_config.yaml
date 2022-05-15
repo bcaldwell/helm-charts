@@ -54,6 +54,8 @@ spec:
   triggers:
 {{- if .Values.routes.recipeImport.enabled }}
   - template:
+      name: notion-hooks-recipe-import
+      conditions: notion-hooks-events-recipe-import
       k8s:
         group: argoproj.io
         operation: create
@@ -109,10 +111,11 @@ spec:
                 secret:
                   secretName: {{ .Values.routes.recipeImport.workflow.notionSecretName | default .Values.global.workflow.notionSecretName }}
         version: v1alpha1
-      name: notion-hooks-recipe-import
 {{ end -}}
 {{- if .Values.routes.kindleHighlightsSync.enabled }}
   - template:
+      name: notion-hooks-kindle-highlights-sync
+      conditions: kindle-highlights-sync
       k8s:
         group: argoproj.io
         operation: create
@@ -168,7 +171,6 @@ spec:
                 secret:
                   secretName: {{ .Values.routes.kindleHighlightsSync.workflow.notionSecretName | default .Values.global.workflow.notionSecretName }}
         version: v1alpha1
-      name: notion-hooks-kindle-highlights-sync
 {{ end -}}
 ---
 {{- if .Values.ingress.enabled }}
