@@ -115,7 +115,7 @@ spec:
 {{- if .Values.routes.kindleHighlightsSync.enabled }}
   - template:
       name: notion-hooks-kindle-highlights-sync
-      conditions: kindle-highlights-sync
+      conditions: notion-hooks-events-kindle-highlights-sync
       k8s:
         group: argoproj.io
         operation: create
