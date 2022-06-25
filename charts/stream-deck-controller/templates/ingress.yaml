@@ -10,12 +10,12 @@ spec:
   rules:
   - host: {{ .Values.ingress.host }}
     http:
-    paths:
-    - backend:
-        service:
-          name: stream-deck-controller
-          port:
+      paths:
+      - backend:
+          service:
             name: stream-deck-controller
-          path: /
-          pathType: Prefix
+            port:
+              name: stream-deck-controller
+            path: /
+            pathType: Prefix
   tls: {{ .Values.ingress.tls | toYaml | nindent 4 }}
