@@ -86,6 +86,17 @@ entries:
     urls:
     - https://github.com/bcaldwell/helm-charts/releases/download/selfops-0.1.0/selfops-0.1.0.tgz
     version: 0.1.0
+  stream-deck-controller:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-06-25T23:43:46.990938029Z"
+    description: A Helm chart for Kubernetes
+    digest: 673ab12b57367f527619fce8d7b529becaad5fa7fc8cbdb1895e1216c5774b78
+    name: stream-deck-controller
+    type: application
+    urls:
+    - https://github.com/bcaldwell/helm-charts/releases/download/stream-deck-controller-0.1.0/stream-deck-controller-0.1.0.tgz
+    version: 0.1.0
   ynab-importers:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -97,4 +108,4 @@ entries:
     urls:
     - https://github.com/bcaldwell/helm-charts/releases/download/ynab-importers-0.1.0/ynab-importers-0.1.0.tgz
     version: 0.1.0
-generated: "2021-01-10T13:16:55.628484394Z"
+generated: "2022-06-25T23:43:46.99094991Z"
