@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "stream-deck-controller.fullname" . }}
+  labels:
+    {{- include "stream-deck-controller.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "stream-deck-controller.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "stream-deck-controller.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      hostNetwork: true
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /stream-deck-controller/server
+          env:
+            name: STREAM_DECK_CONTROLLER_CONFIG
+            value: /stream-deck-controller/config.yml
+          envFrom:
+          - secretRef:
+              name: {{ .Values.envFromSecretName }}
+          ports:
+          - containerPort: 8000
+            hostPort: 8000
+            name: stream-deck-controller
+            protocol: TCP
+          volumeMounts:
+            - name: config-volume
+              mountPath: /stream-deck-controller/config.yml
+              subPath: config.yml
+
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ .Values.volumnes.configVolume }}

@@ -1,0 +1,20 @@
+kind: Ingress
+metadata:
+name: {{ include "stream-deck-controller.fullname" . }}
+labels:
+    {{- include "stream-deck-controller.labels" . | nindent 4 }}
+annotations: {{- .Values.ingress.annotations | toYaml | nindent 4 }}
+spec:
+ingressClassName: nginx
+rules:
+- host: {{ .Values.ingress.host }}
+    http:
+    paths:
+    - backend:
+        service:
+            name: stream-deck-controller
+            port:
+                name: stream-deck-controller
+        path: /
+        pathType: Prefix
+tls: {{ .Values.ingress.tls }}
