@@ -30,7 +30,7 @@ spec:
           command:
             - /stream-deck-controller/server
           env:
-            name: STREAM_DECK_CONTROLLER_CONFIG
+          - name: STREAM_DECK_CONTROLLER_CONFIG
             value: /stream-deck-controller/config.yml
           envFrom:
           - secretRef:
