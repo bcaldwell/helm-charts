@@ -10,7 +10,5 @@ spec:
     port: 8000
     protocol: TCP
     targetPort: http
-  selector:
-    app.kubernetes.io/instance: homebridge
-    app.kubernetes.io/name: homebridge
+  selector: {{- include "stream-deck-controller.selectorLabels" . | nindent 4 }}
   type: ClusterIP
