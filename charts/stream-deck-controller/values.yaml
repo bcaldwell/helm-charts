@@ -51,6 +51,6 @@ volumnes:
   configVolume: stream-deck-controller-config
 
 ingress:
-  tls: {}
+  tls: []
   host: ""
   annotations: {}
