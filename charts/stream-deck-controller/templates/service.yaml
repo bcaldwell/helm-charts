@@ -6,7 +6,7 @@ metadata:
     {{- include "stream-deck-controller.labels" . | nindent 4 }}
 spec:
   ports:
-  - name: stream-deck-controller
+  - name: http
     port: 8000
     protocol: TCP
     targetPort: http
