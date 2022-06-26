@@ -16,6 +16,6 @@ spec:
             name: stream-deck-controller
             port:
               name: stream-deck-controller
-            path: /
-            pathType: Prefix
+         path: /
+         pathType: Prefix
   tls: {{ .Values.ingress.tls | toYaml | nindent 4 }}
