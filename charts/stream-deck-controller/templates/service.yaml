@@ -10,5 +10,5 @@ spec:
     port: 8000
     protocol: TCP
     targetPort: http
-  selector: {{- include "road-dashboard.selectorLabels" . | nindent 4 }}
+  selector: {{- include "stream-deck-controller.selectorLabels" . | nindent 4 }}
   type: ClusterIP
