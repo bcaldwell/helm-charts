@@ -42,8 +42,8 @@ spec:
             protocol: TCP
           volumeMounts:
             - name: config-volume
-              mountPath: /stream-deck-controller/config.yml
-              subPath: config.yml
+              mountPath: /stream-deck-controller/config.yaml
+              subPath: config.yaml
 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
