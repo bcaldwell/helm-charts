@@ -17,5 +17,5 @@ spec:
           service:
             name: stream-deck-controller
             port:
-              name: stream-deck-controller
+              name: http
   tls: {{ .Values.ingress.tls | toYaml | nindent 4 }}
