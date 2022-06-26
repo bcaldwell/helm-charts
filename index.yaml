@@ -21,6 +21,17 @@ entries:
     urls:
     - https://github.com/bcaldwell/helm-charts/releases/download/cronjob-0.1.0/cronjob-0.1.0.tgz
     version: 0.1.0
+  deployment:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-06-26T20:50:41.96815079Z"
+    description: An attempt at a generic helm chart
+    digest: f1d83a14710b94b86466efa1d944f76d1b767aafc284a31661033f60888199cc
+    name: deployment
+    type: application
+    urls:
+    - https://github.com/bcaldwell/helm-charts/releases/download/deployment-0.1.0/deployment-0.1.0.tgz
+    version: 0.1.0
   instapaper-archiver:
   - apiVersion: v2
     appVersion: 0.0.1
@@ -108,4 +119,4 @@ entries:
     urls:
     - https://github.com/bcaldwell/helm-charts/releases/download/ynab-importers-0.1.0/ynab-importers-0.1.0.tgz
     version: 0.1.0
-generated: "2022-06-25T23:43:46.99094991Z"
+generated: "2022-06-26T20:50:41.96816375Z"
