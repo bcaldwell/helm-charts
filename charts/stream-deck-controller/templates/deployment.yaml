@@ -31,7 +31,7 @@ spec:
             - /stream-deck-controller/server
           env:
           - name: STREAM_DECK_CONTROLLER_CONFIG
-            value: /stream-deck-controller/config.yml
+            value: /stream-deck-controller/config.yaml
           envFrom:
           - secretRef:
               name: {{ .Values.envFromSecretName }}
