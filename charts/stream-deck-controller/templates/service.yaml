@@ -9,7 +9,7 @@ spec:
   - name: stream-deck-controller
     port: 8000
     protocol: TCP
-    targetPort: stream-deck-controller
+    targetPort: http
   selector:
     app.kubernetes.io/instance: homebridge
     app.kubernetes.io/name: homebridge
