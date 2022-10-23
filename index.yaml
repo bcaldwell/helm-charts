@@ -23,6 +23,16 @@ entries:
     version: 0.1.0
   deployment:
   - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-10-23T17:43:40.00286608Z"
+    description: An attempt at a generic helm chart
+    digest: 3bc30b20cd6d561b5c961af4cf73c76bca09b4a85ab4f31814099899cc6235a5
+    name: deployment
+    type: application
+    urls:
+    - https://github.com/bcaldwell/helm-charts/releases/download/deployment-0.1.1/deployment-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     appVersion: 1.16.0
     created: "2022-06-26T20:50:41.96815079Z"
     description: An attempt at a generic helm chart
@@ -119,4 +129,4 @@ entries:
     urls:
     - https://github.com/bcaldwell/helm-charts/releases/download/ynab-importers-0.1.0/ynab-importers-0.1.0.tgz
     version: 0.1.0
-generated: "2022-06-26T20:50:41.96816375Z"
+generated: "2022-10-23T17:43:40.002885181Z"
