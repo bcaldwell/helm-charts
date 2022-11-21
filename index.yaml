@@ -3,6 +3,16 @@ entries:
   cronjob:
   - apiVersion: v2
     appVersion: 0.0.1
+    created: "2022-11-21T05:56:21.361091997Z"
+    description: cronjob
+    digest: 646ceb4436f4501356f72578d34ff2697624145652e124bcbfb87bf60e2148b7
+    name: cronjob
+    type: application
+    urls:
+    - https://github.com/bcaldwell/helm-charts/releases/download/cronjob-0.1.2/cronjob-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 0.0.1
     created: "2022-05-14T20:20:56.943010173Z"
     description: cronjob
     digest: 29857e14060c439431fc1c2a92f0d56295b67770c6fe0eff39d9cfe2128020bc
@@ -159,4 +169,4 @@ entries:
     urls:
     - https://github.com/bcaldwell/helm-charts/releases/download/ynab-importers-0.1.0/ynab-importers-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-21T02:46:55.907094435Z"
+generated: "2022-11-21T05:56:21.361402901Z"
