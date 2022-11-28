@@ -150,6 +150,16 @@ entries:
   stream-deck-controller:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2022-11-28T16:49:54.842976342Z"
+    description: A Helm chart for Kubernetes
+    digest: 6780381948bfb3704a634f8ed16e2392678284dcf57cff44ad7466318b1ce870
+    name: stream-deck-controller
+    type: application
+    urls:
+    - https://github.com/bcaldwell/helm-charts/releases/download/stream-deck-controller-0.1.2/stream-deck-controller-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2022-11-28T00:27:01.541154254Z"
     description: A Helm chart for Kubernetes
     digest: a037516e42af3c4bb824fc382078401f723a48f1ea4ccb48eb293c51843923dc
@@ -179,4 +189,4 @@ entries:
     urls:
     - https://github.com/bcaldwell/helm-charts/releases/download/ynab-importers-0.1.0/ynab-importers-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-28T00:27:01.541177054Z"
+generated: "2022-11-28T16:49:54.842999942Z"
