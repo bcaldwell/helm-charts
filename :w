@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    {{- include "stream-deck-controller.labels" . | nindent 4 }}
+  name: stream-deck-controller-config
+data:
+  config.yaml: {{ tpl (.Values.config | toJson) . | toYaml | nindent 4 }}

@@ -50,3 +50,11 @@ Selector labels
 app.kubernetes.io/name: {{ include "stream-deck-controller.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
+
+{{- define "stream-deck-controller.config" -}}
+{{- if typeIs "string" .Values.config -}}
+{{ tpl .Values.config . | fromYaml | toYaml}}
+{{- else -}}
+{{ .Values.config | toYaml }}
+{{- end -}}
+{{- end -}}
